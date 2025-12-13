@@ -88,13 +88,12 @@ jobs:
     needs: [lint, type-check, test]
     services:
       minio:
-        image: minio/minio:latest
+        image: bitnami/minio:latest
         ports:
           - 9000:9000
         env:
           MINIO_ROOT_USER: minioadmin
           MINIO_ROOT_PASSWORD: minioadmin
-        options: --health-cmd "curl -f http://localhost:9000/minio/health/live" --health-interval 10s --health-timeout 5s --health-retries 3
 
       qdrant:
         image: qdrant/qdrant:latest
