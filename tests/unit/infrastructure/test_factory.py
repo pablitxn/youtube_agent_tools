@@ -4,7 +4,6 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.commons.settings.models import Settings
 from src.infrastructure.factory import (
     InfrastructureFactory,
     get_factory,
@@ -23,7 +22,7 @@ def reset_factory_before_each():
 @pytest.fixture
 def mock_settings():
     """Create mock settings."""
-    settings = MagicMock(spec=Settings)
+    settings = MagicMock()
 
     # Blob storage settings
     settings.blob_storage.endpoint = "localhost:9000"
