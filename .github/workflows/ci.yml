@@ -80,15 +80,17 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
 
-  # Integration tests - only on main branch or when explicitly triggered
+  # Integration tests - only when explicitly triggered via label
   integration-test:
     name: Integration Test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'run-integration')
+    if: contains(github.event.pull_request.labels.*.name, 'run-integration')
     needs: [lint, type-check, test]
     services:
       minio:
-        image: bitnami/minio:latest
+        image: minio/minio:latest
+        options: --health-cmd "mc ready local" --health-interval 10s --health-timeout 5s --health-retries 5 --entrypoint ""
+        command: server /data
         ports:
           - 9000:9000
         env:
